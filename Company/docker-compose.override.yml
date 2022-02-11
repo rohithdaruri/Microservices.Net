@@ -1,0 +1,61 @@
+version: '3.4'
+
+services:
+
+  rabbitmq:
+    container_name: rabbitmq
+    ports:
+       - "5672:5672"
+       - "15672:15672"
+    volumes:
+       - rabbitmqdata:/var/lib/rabbitmq
+    hostname: rabbitmq
+
+  onboardsql.db:
+    container_name: onboardsqldb
+    ports:
+       - "2022:1433"
+    environment:
+       SA_PASSWORD: "Admin@123"
+       ACCEPT_EULA: "Y"
+    volumes:
+     - onboardsqldbdata:/var/opt/mssql
+
+  allocatemongo.db:
+    container_name: allocatemongodb
+    restart: always
+    ports:
+       - "27017:27017"
+    volumes:
+       - allocatemongodbdata:/data/db
+  
+  onboard.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "3001:80"
+    depends_on:
+      - rabbitmq
+      - onboardsql.db
+
+  allocate.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "3002:80"
+    depends_on:
+      - rabbitmq
+      - allocatemongo.db
+
+  #company.app:
+  #  container_name: companyapp
+  #  depends_on:
+  #      - allocate.api
+  #      - onboard.api
+  #  ports:
+  #     - "150:80"
+
+volumes:
+  onboardsqldbdata:
+  allocatemongodbdata:
+  rabbitmqdata:

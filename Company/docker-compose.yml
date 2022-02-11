@@ -1,0 +1,39 @@
+version: '3.4'
+
+services:
+
+  rabbitmq:
+    image: ${DOCKER_REGISTRY-}rabbitmq
+    build:
+      context: .
+      dockerfile: Common/infra/Dockerfile
+  
+  onboardsql.db:
+    image: ${DOCKER_REGISTRY-}onboardsqldb
+    build:
+      context: .
+      dockerfile: Onboard/infra/Dockerfile
+
+  allocatemongo.db:
+    image: ${DOCKER_REGISTRY-}allocatemongodb
+    build:
+      context: .
+      dockerfile: Allocate/infra/Dockerfile
+
+  onboard.api:
+    image: ${DOCKER_REGISTRY-}onboardapi
+    build:
+      context: .
+      dockerfile: Onboard/Onboard.API/Dockerfile
+
+  allocate.api:
+    image: ${DOCKER_REGISTRY-}allocateapi
+    build:
+      context: .
+      dockerfile: Allocate/Allocate.API/Dockerfile
+  
+  #company.app:
+  #  image: ${DOCKER_REGISTRY-}companyapp
+  #  build:
+  #    context: .
+  #    dockerfile: WebApp/company-app/Dockerfile

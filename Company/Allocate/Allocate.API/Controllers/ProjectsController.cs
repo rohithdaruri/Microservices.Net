@@ -26,16 +26,16 @@ namespace Allocate.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<IEnumerable<ProjectReadDto>>> GetAllProjects()
+        public async Task<ActionResult<ResponseModel>> GetAllProjects()
         {
             var response = await _projectService.GetAllProjects();
 
             if (response == null || response.Count() == 0)
             {
-                return NoContent();
+                return Ok(new ResponseModel(false, "Projects not exists", response));
             }
 
-            return Ok(response);
+            return Ok(new ResponseModel(true, "Projects exists", response));
         }
 
         [HttpGet]
@@ -43,16 +43,16 @@ namespace Allocate.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Route("{projectId}")]
-        public async Task<ActionResult<ProjectReadDto>> GetProject(string projectId)
+        public async Task<ActionResult<ResponseModel>> GetProject(string projectId)
         {
             var response = await _projectService.GetProject(projectId);
 
             if (response == null)
             {
-                return NotFound();
+                return Ok(new ResponseModel(false, "Project not found", response));
             }
 
-            return Ok(response);
+            return Ok(new ResponseModel(true, "Project found", response));
         }
 
         [HttpPost]
@@ -70,16 +70,16 @@ namespace Allocate.API.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Route("AllEmployees")]
-        public async Task<ActionResult<IEnumerable<EmployeeReadDto>>> GetAllEmployees()
-        {
+        public async Task<ActionResult<ResponseModel>> GetAllEmployees()
+        {           
             var response = await _projectService.GetAllEmployees();
 
             if (response == null || response.Count() == 0)
             {
-                return NoContent();
+                return Ok(new ResponseModel(false, "Exployees not exists", response));
             }
 
-            return Ok(response);
+            return Ok(new ResponseModel(true, "Exployees exists", response));
         }
 
         [HttpPut]

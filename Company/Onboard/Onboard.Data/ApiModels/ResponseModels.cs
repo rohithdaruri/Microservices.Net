@@ -6,5 +6,5 @@ using System.Threading.Tasks;
 
 namespace Onboard.Data.ApiModels
 {
-    public record ResponseModel(bool IsSuccess, string Description, object data = null);
+    public record ResponseModel(bool IsSuccess, string Description, object Data = null);
 }

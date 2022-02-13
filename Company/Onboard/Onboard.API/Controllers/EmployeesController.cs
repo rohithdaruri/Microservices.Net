@@ -21,36 +21,36 @@ namespace Onboard.API.Controllers
         }
 
         [HttpGet]
-        [ProducesResponseType(typeof(IEnumerable<EmployeeReadDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResponseModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<IEnumerable<EmployeeReadDto>>> GetAllEmployees([FromQuery] bool IsActive)
+        public async Task<ActionResult<ResponseModel>> GetAllEmployees([FromQuery] bool IsActive)
         {
             var response = await _employeeService.GetAllEmployees(IsActive);
 
             if (response == null || response.Count() == 0)
             {
-                return NoContent();
+                return Ok(new ResponseModel(false, "Employees not exists", response));
             }
 
-            return Ok(response);
+            return Ok(new ResponseModel(true, "Employees exists", response));
         }
 
         [HttpGet]
-        [ProducesResponseType(typeof(EmployeeReadDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResponseModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Route("{employeeId}")]
-        public async Task<ActionResult<EmployeeReadDto>> GetEmployee([FromRoute] int employeeId)
+        public async Task<ActionResult<ResponseModel>> GetEmployee([FromRoute] int employeeId)
         {
             var response = await _employeeService.GetEmployee(employeeId);
 
             if (response == null)
             {
-                return NotFound();
+                return Ok(new ResponseModel(false, "Employee not found", response));
             }
 
-            return Ok(response);
+            return Ok(new ResponseModel(true, "Employee found", response));
         }
 
         [HttpPost]

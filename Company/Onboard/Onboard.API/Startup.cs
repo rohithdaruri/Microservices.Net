@@ -46,6 +46,11 @@ namespace Onboard.API
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Onboard.API", Version = "v1" });
             });
+
+            services.AddCors(options => {
+                options.AddPolicy("AllowOrigin", builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod().Build());
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -57,6 +62,8 @@ namespace Onboard.API
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Onboard.API v1"));
             }
+
+            app.UseCors("AllowOrigin");
 
             app.UseRouting();
 

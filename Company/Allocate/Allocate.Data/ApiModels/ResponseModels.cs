@@ -6,5 +6,5 @@ using System.Threading.Tasks;
 
 namespace Allocate.Data.ApiModels
 {
-    public record ResponseModel(bool IsSuccess, string Description, object data = null);
+    public record ResponseModel(bool IsSuccess, string Description, object Data = null);
 }
